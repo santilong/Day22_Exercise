@@ -1,0 +1,20 @@
+{% extends 'master.html' %}
+{% block title %}管理登录{% endblock %}
+
+{% block body %}
+    <form action="/login/" method="post" class="form-inline">
+        {% csrf_token %}
+{#        {{ csrf_token }}#}
+        <div class="form-group">
+            {{ obj.user.label }}{{ obj.user }}
+        </div>
+        <div class="form-group">
+            {{ obj.pwd.label }}{{ obj.pwd }}
+        </div>
+        <div class="checkbox">
+            <input type="checkbox" name="remember" value="1"> Remember me
+{#            {{ obj.remember }} Remember me#}
+        </div>
+        <input type="submit" value="提交" class="btn btn-default"><span style="color: red;margin-left: 10px;">{{ ret.error }}</span>
+    </form>
+{% endblock %}

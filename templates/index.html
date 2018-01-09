@@ -1,0 +1,36 @@
+{% extends 'master.html' %}
+{% block title %}主页{% endblock %}
+{% block body %}
+    <div style="height: 48px;background-color: #2aabd2;">
+        <div>{{ username }}</div>
+        <a id="quit">注销</a>
+    </div>
+    <div style="background-color: #5bc0de;">
+        <a id="hosts" href="/hosts/" target="_self">主机管理</a>
+        <a id="user" href="/admin/" target="_self">用户管理</a>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+    $(function () {
+        $('#quit').click(function () {
+            $.ajax({
+                url:'/logout/',
+                type:'POST',
+                dataType:'JSON',
+                data:{'logout':'True'},
+                headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+                success:function (obj) {
+                    console.log(obj.logout);
+                    if(obj.logout){
+                        console.log(obj.logout);
+                        location.href = '/login/'
+                    }else {
+                        alert(obj.error)
+                    }
+                }
+            })
+        })
+    })
+    </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'master.html' %}
+{% block title %}修改实例信息{% endblock %}
+{% block body %}
+    <form action="/hostsedit-{{ nid }}/" method="post" id="form_edit_host">
+        {% csrf_token %}
+        <div class="form-group">
+            <!--此处errors如果不是form提交则不会生成！！！-->
+            {{ obj.hostname.label }}{{ obj.hostname }}<span>{{ obj.errors.hostname.0 }}</span>
+        </div>
+        <div class="form-group">
+            {{ obj.ip.label }}{{ obj.ip }}<span>{{ obj.errors.ip.0 }}</span>
+        </div>
+        <div class="form-group">
+            {{ obj.port.label }}{{ obj.port }}<span>{{ obj.errors.port.0 }}</span>
+        </div>
+        <input type="button" value="提交" class="btn btn-default" id="edit_hostinfo">
+        <input type="button" value="返回主机列表" class="btn btn-default" id="return_hosts">
+    </form>
+{% endblock %}
+{% block script %}
+    <script>
+        $(function () {
+            $('#edit_hostinfo').click(function () {
+                $.ajax({
+                    url:'/hostsedit-{{ nid }}/', //此处url一定要写正确，否则提交失败；
+                    type:'POST',
+                    dataType:'JSON',
+                    data:$('#form_edit_host').serialize(),
+                    headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+                    success:function (obj) {
+
+                    }
+                })
+            })
+            $('#return_hosts').click(function () {
+                location.href = '/hosts/'
+            })
+        })
+    </script>
+{% endblock %}

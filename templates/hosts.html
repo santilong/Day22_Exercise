@@ -1,0 +1,72 @@
+{% extends 'master.html' %}
+{% block title %}主机管理{% endblock %}
+{% block css %}
+    <style>
+        .baseup .base {
+            background-color: #5bc0de;
+            padding: 5px;
+            margin: 5px;
+        }
+        .baseup .active {
+            background-color: orangered;
+            color: white;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <a href="/hostsadd/"><button type="button" class="btn btn-default" >新增</button></a>
+    <a href="/index/"><button type="button" class="btn btn-default" >返回控制台</button></a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>HostName</th>
+                <th>IP</th>
+                <th>Port</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in obj %}
+                <tr>
+                    <td id="{{ row.id }}" style="display: none"></td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ row.hostname }}</td>
+                    <td>{{ row.ip }}</td>
+                    <td>{{ row.port }}</td>
+                    <td><a href="/hostsedit-{{ row.id }}" >编辑</a> | <a class="hostsdelete">删除 <span></span></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <span class="baseup">{{ page_str }}</span>
+    {{ get_ret.status }}
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function () {
+            $('.hostsdelete').click(function () {
+                var nid = $(this).parent().parent().children().attr('id');
+                $.ajax({
+                    url:'/hosts/',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:{'nid':nid},
+                    headers:{'X-CSRFtoken':$.cookie('csrftoken')},
+                    success:function (obj) {
+                        if(obj.status) {
+                            location.reload();
+                        }else {
+                            $('#td #span').text(obj.error)
+                        }
+                    }
+                })
+            });
+                if ('{{ get_ret.status }}' == '1') { //此处要用引号包裹起来才能正常工作
+                    alert('{{ get_ret.error }}');
+                    location.href = '/hosts/'
+                }
+        })
+    </script>
+{% endblock %}

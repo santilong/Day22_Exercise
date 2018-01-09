@@ -207,4 +207,7 @@ def test(request):
     t1 = time.time()
     t2 = time.time()
     t3 = time.time()
-    return render(request,'test.html',{'t1':t1,'t2':t2,'t3':t3})
+    remoteip = {}
+    # print(request.META)
+    remoteip['ip'] = request.META['REMOTE_ADDR']
+    return render(request,'test.html',{'t1':t1,'t2':t2,'t3':t3,'remoteip':remoteip})

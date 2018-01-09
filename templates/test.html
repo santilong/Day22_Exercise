@@ -6,14 +6,13 @@
     <title>Title</title>
 </head>
 <body>
-        {% cache 1 t1 %}
+    {% cache 1 t1 %}
         <p>{{ t1 }}</p>
     {% endcache %}
     {% cache 3 t2 %}
         <p>{{ t2 }}</p>
     {% endcache %}
-
-        <p>{{ t3 }}</p>
-
+    <p>{{ t3 }}</p>
+    {{ remoteip.ip }}
 </body>
 </html>
